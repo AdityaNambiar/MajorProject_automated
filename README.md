@@ -11,6 +11,7 @@
 7. Docker-compose v1.24
 8. Have [Hyperledger Composer](https://hyperledger.github.io/composer/latest/installing/installing-index.html) & Hyperledger Fabric (should come with Hyperledger Composer's installation) installed.
 - Some of the above tools should be installed after you run `prereqs-ubuntu-updated.sh` successfully under HyperledgerModel directory.
+**Do <ins>not run the prereqs script</ins> given on the <ins>Hyperledger Composer website</ins> as it is outdated and won't let Fabric start properly.**
 ## Setup Jenkins with some plugins:
 Jenkins works on plugins and we need to ensure that our CI server (Jenkins) builds our <ins>sample NodeJS application</ins> which has a git repository and relies on docker for deployment.
 
