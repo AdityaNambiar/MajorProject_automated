@@ -57,6 +57,9 @@ https://www.npmjs.com/package/devopschain
 Example:  
 `./startProject.sh --jwt 12345 --jktoken 118122c572f717ee7547b44 --jkurl 193.169.1.11 --jkuser john` 
 
+- Incase your Jenkins user ID has space in between, enclose it within double quotes as:
+`... --jkuser "john 1234" ...`
+
 ## Authors:
 - [gopimehta](https://github.com/gopimehta)  
 - [rajmandal800](https://github.com/rajmandal800/)  
