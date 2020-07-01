@@ -28,16 +28,6 @@ Jenkins works on plugins and we need to ensure that our CI server (Jenkins) buil
 7. Click on "Apply" 
 8. Click on "Save". 
   
-##### Configure the 'NodeJS' plugin:
-1. Click on "Add NodeJS installation" (_can't remember the exact button name but it something similar_ );
-2. Tick "Install automatically" if it is unticked.
-3. Give a name to NodeJS installation e.g. node14
-4. Select a NodeJS version e.g. 14.2.0 (we used this)
-5. Tick "Force 32-bit architecture
-6. Set "Global npm packages refresh hours" to 72, if it is not already set.
-7. Click on "Apply" 
-8. Click on "Save". 
-
 ##### Configure the 'Docker' plugin:
 1. Click on "Add Docker installation" (_can't remember the exact button name but it something similar_ );
 2. Tick "Install automatically" if it is unticked.
@@ -55,6 +45,9 @@ Jenkins works on plugins and we need to ensure that our CI server (Jenkins) buil
 
 ## Start the project:
 **Please make sure all prerequisites are installed properly and the Jenkins plugin configurations are done correctly**
+
+- Install the devopschain CLI using the command given here:  
+https://www.npmjs.com/package/devopschain  
 
 1. `git clone https://github.com/AdityaNambiar/MajorProject_automated.git`
 2. `./startProject.sh --help` - _To view the usage information before moving ahead_
