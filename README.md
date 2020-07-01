@@ -63,6 +63,6 @@ Example:
 `./startProject.sh --jwt 12345 --jktoken 118122c572f717ee7547b44 --jkurl 192.168.1.102 --jkuser john` 
 
 ## Authors:
-- [gopimehta](https://github.com/gopimehta) [ Frontend ]  
-- [rajmandal800](https://github.com/rajmandal800/) [ Blockchain middleware, project integration ]  
-- [AdityaNambiar](https://github.com/AdityaNambiar/) [ GitSCM & IPFS backend, also responsible for conversion of project to automation ]
+- [gopimehta](https://github.com/gopimehta)  
+- [rajmandal800](https://github.com/rajmandal800/)  
+- [AdityaNambiar](https://github.com/AdityaNambiar/)  
