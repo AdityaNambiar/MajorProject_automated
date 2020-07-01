@@ -55,7 +55,7 @@ https://www.npmjs.com/package/devopschain
 2. `./startProject.sh --help` - _To view the usage information before moving ahead_
   
 Example:  
-`./startProject.sh --jwt 12345 --jktoken 118122c572f717ee7547b44 --jkurl 192.168.1.102 --jkuser john` 
+`./startProject.sh --jwt 12345 --jktoken 118122c572f717ee7547b44 --jkurl 193.169.1.11 --jkuser john` 
 
 ## Authors:
 - [gopimehta](https://github.com/gopimehta)  
