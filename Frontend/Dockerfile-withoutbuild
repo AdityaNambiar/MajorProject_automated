@@ -1,0 +1,18 @@
+FROM node:12.16.2-alpine
+# After picking a base image, set the working directory.
+WORKDIR /frontend/
+# .dockerignore file should take care of unnecessary things not being transferred to docker daemon.
+COPY . .
+# Set up node_modules
+RUN apk add --no-cache build-base git python2
+RUN node -v 
+RUN npm install
+# Start Web server
+EXPOSE 3000
+
+# Add Tini
+RUN apk add --no-cache tini
+# Tini is now available at /sbin/tini
+ENTRYPOINT ["/sbin/tini", "-s", "--"]
+# Run your program under Tini
+CMD ["npm","start"]

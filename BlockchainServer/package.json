@@ -1,0 +1,30 @@
+{
+  "name": "Middleware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "composer-admin": "^0.20.9",
+    "composer-cli": "^0.20.9",
+    "composer-common": "^0.20.9",
+    "config": "^3.3.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.25.3",
+    "nocache": "^2.1.0",
+    "nodemon": "^2.0.3",
+    "request": "^2.88.2",
+    "socket.io": "^2.3.0"
+  }
+}

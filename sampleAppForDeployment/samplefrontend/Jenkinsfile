@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    environment {
+        CI = 'true' // For 'npm test' (in test stage) to not expect user input under CI environment.
+        IP = '0.0.0.0'
+        port = '7009'
+        projName = 'reactapp'
+        projBranch = 'frontend'
+    }
+    tools {
+	    nodejs "node12"
+    }
+    stages {
+        stage ('Environment') {
+            steps {
+                sh 'node -v'
+		        sh 'yarn cache clean'
+		        sh 'yarn config set ignore-engines true'
+                sh 'yarn install --network-timeout 1000000'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm run test'
+            }
+        }
+        stage('Build'){
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage ('Deploy to Private Docker Registry'){
+            steps {
+                sh 'docker build -t ${IP}:${port}/${projName}:${projBranch} -f Dockerfile .'
+            }
+            post { 
+            success { 
+                sh 'docker push ${IP}:${port}/${projName}:${projBranch}'
+            }
+                }
+        }
+    }
+}

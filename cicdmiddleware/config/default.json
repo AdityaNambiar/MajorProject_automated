@@ -1,0 +1,7 @@
+{
+    "registry_ip":"172.17.0.1",
+    "jwtPrivateKey":"",
+    "jenkins_api_token":"",
+    "jenkins_username":"",
+    "ipfssvr-host":"172.17.0.1"
+}

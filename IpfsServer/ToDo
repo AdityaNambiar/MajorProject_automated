@@ -1,0 +1,117 @@
+- Final test results:
+    - initProj, yes.
+    - commitFile, yes.
+    - addBranch, yes.
+    - getBranches, yes.
+    - getFiles, yes.
+    - deleteBranch,
+        -- Test1, nope.
+            { Err (fix tomorrow):
+                main err: deleteBranch git ERR: RefNotExistsError: Failed to delete branch "f2" because branch "f2"
+                does not exists.
+                at Object.deleteBranch
+            }
+        -- Test2, yes. - Added a workaround for this error. It makes sense to bypass this one specific error because all we need to do is to delete the branch from remote repo as well (locally it does not exist).
+    - deleteFile, yes
+    - fileCommitHistory, yes
+    - branchCommitHistory, yes
+    - checkoutBranch, yes
+    - gitGraph, yes
+    - diffFiles, yes
+    - diffForCommit, yes. But talk with Gopi about showing the parent(s) and the commit hash itself (using state management) - because this route only gives the diff patch which is shown below.
+    - downloadBareRepo,
+        -- Test1, nope.
+            { Err (workaround found - confirm with Raj about procedure):
+                Could not download barerepo repo:
+                Error: EISDIR, read
+                SO link for insight on this error: https://stackoverflow.com/questions/20417118/using-node-js-i-get-error-eisdir-read 
+            }
+    - downloadRepo (apply the same fix which you'd do for /downloadBareRepo)
+        -- Only keeping this for now. This route works and returns .zip in "res.download"
+    - readFile, yes.
+    - fixConsistency, yes
+    - mergeFiles, yes
+    - pushChecker - works same as /mergeFiles except it's jut git pull origin srcBranch.
+    - deleteProj, yes
+
+- Routes whose test remain:
+
+
+1. projName and majorHash in an object to be returned back to blockchain.
+
+2. (Inform Gopi) 
+    authorname = participantCard's Identifier (i.e. get name) and 
+    authoremail and
+    branchName (i.e. on which branch the user is currently performing the route actions)
+    => should be kept in world state 
+
+3. Features remaining:
+    - (SCRAPPED): issues (Relevant ToDo - 4, issues-datastructure.json)
+    - (Future - optional): Restore a branch.
+    - (Future - optional): Public repos, issues.
+
+After devOnCLI pushed changes and devOnRemote is working on the repository,
+    [System checks] If pushed change is not conflicting,
+        git commit to create a new commit.
+    [System checks] If pushed change is a conflicting one (i.e. the latest (pushed) commit has updated the same file which was being edited remotely),
+        [ System allows user to look at the diff patch of what changed ] [ System is currently in merge state - after pulling ]
+        If user is okay with proceeding with commit, 
+            System allows user to proceed with completing this merge by: `git checkout --ours .` && git commit -m "commit msg"
+                    { Remember this will not erase 'theirs' changes because unka change already committed hai }
+                    { Thus a new merge commit - but with user provided commit msg is created }
+
+
+- Final pointers:
+ - System will allow creation of projects by anyone. 
+ - Folder structure will made as:
+    projects/
+        projectName1.git (if it not exists, bring from IPFS)
+        projectName1/ (if it not exists, clone it out from bare)
+            username1/  (created for each route - because it is removed for each route) ( this contains the work dir )
+            username2/ 
+        projectName2/
+            username1/
+ - (Utility - rmWorkdir(username)) Delete username folder under projectName folder whenever user's actions are completed (when route is about to end)
+ - Operations:
+        a. setup the directory structure.
+        b. perform git operations.
+        c. after commit, run Checker.
+            if (Checker does not show conflicts):
+                push changes to project's bare folder. (pass the filename_arr as well - here it will be empty)
+            if (Checker throws err):
+                take the filename_arr and buffer of those files and pass it.
+        d. Remove username folder (utility as mentioned above) 
+ - When user wants to merge, 
+    a. execute mergeFiles route. 
+        -- if conflicts arise (filename_arr is not empty). { run Checker }
+            Do not delete this user's folder.
+            Pass the filename_arr and all the buffers of the respective files.
+            if user wants to perform other operations (means while he is in merge state): (add a check at each route to know whether same user ka folder exists or not)
+                if it exists, throw err: "<git ka error>"
+        -- if no conflicts exist,
+                directly push to bare.
+ - pushChecker:
+    - Check between bare repo status and username work dir status
+    - Utility.
+        - `git pull barerepo master`
+        - if conflicts arise, { do the same that you did for mergeFiles route when conflicts arise }.
+        - if conflicts dont arise, pull will be successful.
+
+ - statusChecker:
+    - `git fetch`
+    - `git status`
+        - Extract the line the "This branch is ahead / behind n commits ...."
+
+ - (Merge Conflict page):
+    if user wants to work on CLI (Show URL / Download Repo),
+        downloadRepo route:
+            zip the work dir of user.
+            send the zip.
+            Remove user's work dir.
+
+
+getFiles shell script:
+credits: https://stackoverflow.com/questions/17359370/git-show-last-commit-date-and-message-for-each-file-in-directory-like-github/17361406#17361406
+
+modified for my use case:
+FILES="$(git ls-tree --name-only HEAD .)";IFS="$(printf "\n\b")";for f in $FILES; do    str="$(git log -1 --pretty=format:"%s%x28%x7c%x29%x2D%x7c%x2D%x28%x7c%x29%cr" $f)";  printf "%s-%s\n" "$f" "$str"; done

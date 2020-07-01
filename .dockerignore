@@ -1,0 +1,14 @@
+BlockchainServer/
+cicdmiddleware/
+DevopschainCli/
+Frontend/
+HyperledgerModel/
+IpfsServer/
+sampleAppForDeployment/
+.env
+.gitignore
+docker-compose.yml
+Dockerfile-ipfs
+README.md
+startProject.sh
+

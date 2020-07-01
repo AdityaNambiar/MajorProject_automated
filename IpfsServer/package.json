@@ -1,0 +1,32 @@
+{
+  "name": "nodeserv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aditya",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "child_process": "^1.0.2",
+    "config": "^3.3.1",
+    "cors": "^2.8.5",
+    "diff": "^4.0.2",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "express-router": "0.0.1",
+    "http": "0.0.1-security",
+    "hypernal": "^0.3.0",
+    "ipfs": "^0.41.2",
+    "ipfs-http-client": "^38.2.1",
+    "isomorphic-git": "^1.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-git-server": "^0.6.1",
+    "simple-get": "^3.1.0",
+    "socket.io": "^2.3.0",
+    "zip-a-folder": "0.0.12"
+  }
+}

@@ -1,0 +1,107 @@
+version: '3.7'
+
+services:
+  dochain-reactsvr:
+    container_name: dochain-reactsvr
+    image: adinambiar24/dochain:reactsvr
+    init: true
+    build: 
+      context: Frontend/
+      dockerfile: Dockerfile-withoutbuild
+    environment: 
+      - CI=true # https://github.com/facebook/create-react-app/issues/8688#issuecomment-602084087
+    ports:
+      - "3000:3000"
+    networks:
+      - composer_default
+      - mjrprojnet
+    volumes:
+      - dochain-frontend:/frontend/
+
+  dochain-ipfs:
+    container_name: dochain-ipfs
+    image: adinambiar24/dochain:ipfs
+    init: true
+    build: 
+      context: .
+      dockerfile: Dockerfile-ipfs
+    ports: 
+      - "5001:5001" # We need only the API endpoint of IPFS.
+    networks:
+      - composer_default
+      - mjrprojnet
+    volumes: 
+      - "$HOME/.ipfs/config:/.ipfs/config/"
+
+  dochain-ipfssvr:
+    container_name: dochain-ipfssvr
+    image: adinambiar24/dochain:ipfssvr
+    init: true
+    build:
+      context: IpfsServer/
+      dockerfile: Dockerfile
+      args:
+        - JWTPRIVKEY=12345  # If this is changed, make sure to run 'docker-compose build' because these are build-time args.
+    ports:
+      - "5000:5000"
+      - "7005:7005"
+    networks:
+      - composer_default
+      - mjrprojnet
+    volumes:
+      - dochain-ipfssvr:/ipfsServer/
+
+  # dochain-cicdsvr: # Gave up due to (my time being spent more than alloted) & Jenkins (which is on host) not able to access cicdsvr proj silo (which is inside container) 
+  #   container_name: dochain-cicdsvr
+  #   image: adinambiar24/dochain:cicdsvr
+  #   env_file: .env
+  #   init: true # To use tini
+  #   build:
+  #     context: cicdmiddleware/
+  #     dockerfile: Dockerfile
+  #     args:
+  #       - JWTPRIVKEY=12345 # If you change this, make sure to run 'docker-compose build' because these are build-time args.
+  #   environment: 
+  #     - JENKINS_URL=$JENKINS_URL
+  #     - JENKINS_USER_ID=$JENKINS_USER_ID
+  #     - JENKINS_API_TOKEN=$JENKINS_API_TOKEN
+  #   ports:
+  #     - "5003:5003"
+  #   networks:
+  #     - composer_default
+  #     - mjrprojnet
+  #   volumes:
+  #     - ./cicdmiddleware/projects_silo:/home/ipfsuser06/cicdmiddleware/projects_silo:rw
+  #     - dochain-cicdsvr:/cicdmiddleware/
+  #     - /var/run/docker.sock:/var/run/docker.sock:rw
+
+  dochain-privreg: 
+    container_name: dochain-registry
+    image: adinambiar24/dochain:priv_registry
+    init: true
+    ports:
+      - "7009:5000"
+    restart: always
+    networks:
+      - composer_default
+      - mjrprojnet
+    volumes:
+      - dochain-registrydata:/data
+
+
+volumes:
+  dochain-frontend:
+  dochain-ipfssvr:
+  dochain-cicdsvr:
+  dochain-registrydata:
+
+networks:
+  composer_default:
+    external: true
+    name: composer_default
+  mjrprojnet: # This has a subnet of 192.168.0.0/16 (Aditya's IP is of the same subnet so he needs this predefined net, alterable in startServices.sh)
+    external: true
+    name: mjrprojnet
+
+
+

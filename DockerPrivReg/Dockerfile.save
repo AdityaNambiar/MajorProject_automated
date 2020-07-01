@@ -1,0 +1,5 @@
+FROM registry:2.7.1
+
+RUN mkdir /etc/docker
+RUN touch /etc//etc/docker/daemon.jsondocker/daemon.json
+RUN cat "{}" >>

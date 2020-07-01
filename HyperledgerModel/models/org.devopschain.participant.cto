@@ -1,0 +1,33 @@
+
+
+
+namespace org.devopschain.participant
+abstract participant DevOpsParticipant identified by pIdentifier {
+  o String pType
+  o String pIdentifier
+  o String fname
+  o String lname
+  o String gender
+  o String designation
+  o String emailid
+  o String employeeid
+  o String contact
+}
+
+participant ProjectManager extends DevOpsParticipant {
+  
+}
+
+
+participant Member extends DevOpsParticipant {
+  
+}
+participant Client identified by pIdentifier {
+  o String pIdentifier
+  o String pType
+  o String fname
+  o String lname
+  o String gender
+  o String emailid
+  o String contact
+}

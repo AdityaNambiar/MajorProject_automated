@@ -1,0 +1,31 @@
+
+
+1)Install java 8 or 11 
+2)Download and install jenkins , url :https://pkg.jenkins.io/debian-stable/
+3)Got to browser at url : localhst:8080
+4)setup jenkins account 
+5)Install - docker, nodejs plugin
+6)Add git, java(ex : usr/lib/jvm), docker, node config/path and save, apply
+7)Add jenkins user to docker group for acces permission. 
+    command: sudo usermod -a -G docker jenkins
+8)Check whether user jenkins is added to docker group
+    command: cat /etc/group | grep 'docker'
+9)Creating Docker Private Registry:
+    command to run private docker registry image:
+        docker run -d -p 7009:5000 --restart always --name registry -v registrydata:/data registry:2.7.1
+10)Setting our pc ip to private registry docker.service file :
+    a)service docker status -> under this at loaded tage not the path of docker.service (it would be /lib/systemd/system/docker.service)
+    b) Now open that file : sudo nano <that path>
+    c)At ExecStart, /usr/bin/dockerd --insecure-registry 192.168.43.160:7009 -H fd:// --containerd=/run/containerd/containerd.sock
+12)Now, restart docker :
+    command : 
+        a) sudo systemctl daemon-reload
+        b) service docker restart
+        c) systemctl status docker
+13) Make Sure the Ip of docker registry is corrct in jenkins file
+
+const jenkins_api_token = config.get("jenkins_api_token");
+const jenkins_username = config.get("jenkins_username");
+const jenkins_port = "8080";
+const jenkins_baseUrl = `http://${jenkins_username}:${jenkins_api_token}@${IP}:${jenkins_port}`;
+const jenkins = require('jenkins-api').init(jenkins_baseUrl);

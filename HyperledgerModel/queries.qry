@@ -1,0 +1,12 @@
+query getAllMembers {
+  description: "Select all Members"
+  statement:
+      SELECT org.devopschain.participant.Member
+}
+
+query getAllProjects {
+  description: "Select all Projects"
+  statement:
+      SELECT org.devopschain.asset.Project
+}
+

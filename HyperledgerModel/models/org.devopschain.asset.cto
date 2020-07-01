@@ -1,0 +1,165 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.devopschain.asset
+import org.devopschain.participant.DevOpsParticipant
+
+asset Project identified by projectid{
+  o String projectid
+  o String description
+  o DevOpsParticipant [] collaborators
+  o Boolean private 
+  o String datetime
+  o String projecthash
+  o Chat [] chats
+  --> DevOpsParticipant creator
+
+}
+asset ClientAsset identified by cpid {
+  o String cpid
+  o Chat [] chats
+  o String [] clientDocumentHash
+  --> DevOpsParticipant creator
+}
+concept Chat {
+  o String username
+  o String message
+  o Boolean sent
+  o String timestamp
+}
+
+transaction createClientChat {
+  o String chatid
+  o Chat chat
+}
+event chatCreated {
+  o String chat
+}
+transaction addDocumentHash {
+  o String cpid
+  o String documenthash
+}
+transaction createCollaboratorChat {
+  o String chatid
+  o Chat chat
+}
+transaction getClientsOfManager{
+ 
+}
+event clients {
+  o String clients
+}
+transaction getClientAsset {
+  o String clientid
+}
+event clientAssetRead {
+  o String clientasset
+}
+transaction createProject {
+  o String projectid
+  o String description
+  o Boolean private
+}
+event projectCreated {
+  o String project
+}
+
+transaction updateProject {
+  o String projectid
+  o String description
+  o DevOpsParticipant [] collaborators
+  o String projecthash
+  o Boolean private 
+}
+event projectUpdated {
+  o String project
+}
+transaction checkAccess {
+  o String projectid
+}
+event AccessStatus{
+  o String status
+}
+transaction createParticipant {
+  o String pType
+  o String pIdentifier
+  o String fname
+  o String lname
+  o String gender
+  o String designation
+  o String emailid
+  o String employeeid
+  o String contact
+}
+
+event participantCreated {
+  o String pdetails
+}
+
+transaction getParticipants {
+
+}
+event participants {
+  o String participants
+}
+transaction readProject {
+  o String projectid
+}
+event projectRead {
+  o String project
+}
+transaction deleteProject {
+  o String projectid
+}
+event projectDeleted {
+  o String project
+}
+transaction getAllProjects {
+  
+}
+event projects {
+  o String projects
+}
+transaction getProjectsOfManager {
+
+}
+
+event projectsOfManager {
+  o String projects
+}
+
+transaction getProjectsOfMember {
+  
+}
+event projectsOfMember {
+  o String projects
+}
+transaction updateHash {
+  o String projectid
+  o String projecthash
+}
+
+transaction createClient {
+  o String pIdentifier
+  o String pType
+  o String fname
+  o String lname
+  o String gender
+  o String emailid
+  o String contact
+}

@@ -1,0 +1,155 @@
+const path = require('path');
+const express = require('express');
+const router = express.Router();
+const Docker = require('dockerode');
+const config = require("config")
+const IP = config.get("registry_ip")
+const dockerapi = new Docker();
+const registryPort = 7009; // Ideally you can set this as process.env or something like this to take in the registry port no. from environment variables.
+
+
+// (async () => {
+//     const image = await dockerapi.listImages({
+//                 filter: `${IP}:${registryPort}/react`
+//             });
+//     console.log(image);
+// });
+
+// Utility imports:
+
+const cleanUp = require('../utilities/cleanUp');
+const auth = require("../utilities/auth")
+router.post('/', auth,async (req, res) => {
+    
+    req.setTimeout(0) //no time-out
+    try {
+        let projName = req.body.projName;
+        let branchName = req.body.branchName;
+        // let tagName = req.body.tagName.toString().toLowerCase();
+
+        let imageName = `${IP}:${registryPort}/${projName}:${branchName}`.toLowerCase();
+        let jobName = `${projName}-${branchName}`.toLowerCase();
+        await cleanUp(imageName, jobName);
+        await pruneImages();
+        // await pruneContainers();
+        await pullImage(imageName);
+        let urls = await createContainer(jobName, imageName) 
+        res.status(200).json({projName: projName, urls: urls});
+    } catch (err) {
+        console.log(err);
+        await pruneImages()
+        // await pruneContainers()
+        res.status(400).json({err:`(deploy) main err ${err.name} :- ${err.message}`});
+    }
+})
+function pruneImages(){
+    const io = require("../utilities/svsocket").getIo();
+    io.emit("message",{iomessage:"Pruning dangling images...",progress:8})
+    console.log("Pruning dangling images ..."); 
+    return new Promise( async (resolve, reject) => {
+        try {
+            await dockerapi.pruneImages({ 
+                filters: { // this is what they mean by - map[string][]string <- where first 'string' is key of JSON obj and second 'string' is value of string array of JSON obj
+                    "dangling":["true"]
+                }
+            })
+            return resolve(true)
+        } catch(err) {
+            console.log(err);
+            return reject(new Error(`Unable to prune images: `+err));
+        }
+    })
+}
+
+function pruneContainers(){
+    const io = require("../utilities/svsocket").getIo();
+    console.log("Pruning containers except 'registry' ...")
+    io.emit("message",{iomessage:"Pruning containers except 'registry' ...",progress:8})
+    return new Promise( async (resolve, reject) => {
+        try {
+            await dockerapi.pruneContainers({ 
+                filters: { // this is what they mean by - map[string][]string <- where first 'string' is key of JSON obj and second 'string' is value of string array of JSON obj
+                    "label!":["registry"] // Remove any container without the name "registry"
+                }
+            })
+            return resolve(true)
+        } catch(err) {
+            console.log(err);
+            return reject(new Error(`Unable to prune images: `+err));
+        }
+    })
+}
+function pullImage(imageName) {
+    /**
+        When pulling images:
+        - Remove the existing any projName image on local system (so that you can pull the projName image and only it stays - the one with the private registry IP)
+        - Remove any existing projName containers. (Containers with the same projName cannot exist so it gives a "Conflict. The container name "/reactapp" is already in use" error anyway)
+            -- I think it's better to clean up and then pull and then run container.
+    */
+   const io = require("../utilities/svsocket").getIo();
+    console.log("Pulling image...");
+    io.emit("message",{iomessage:"Pulling image...",progress:8})
+    return new Promise( async (resolve, reject) => {
+        try {
+            await dockerapi.pull(imageName, (err, stream) => {
+              if (err) {
+                console.log(err);
+                return reject(new Error(`docker-pull err ${err.name} :- ${err.message}`))
+              } else {
+                  stream.on('data', (data) => 
+                  {
+                    // This is stream (access the strings via data.stream) logs
+                    //console.log("pullImage: \n",String(data));
+                  })
+                  stream.on('end',(data)=> {
+                    //console.log(data); // undefined.
+                    return resolve(true);
+                  })
+                  stream.on('error', (error) => {
+                    return console.log("pullImage stream error: \n",error);
+                  })
+              }
+            });
+        } catch(err) {
+            console.log(err);
+            return reject(new Error(`pullImage err: ${err}`));
+        }
+    })
+}
+
+function createContainer(jobName, imageName){
+    const io = require("../utilities/svsocket").getIo();
+    console.log("Going to run container...");
+    io.emit("message",{iomessage:"Running Container...",progress:8})
+    return new Promise( async (resolve, reject) => {
+        try {
+            let container = await dockerapi.createContainer({
+              Image: imageName,
+              name: jobName,
+              PublishAllPorts: true
+            }) 
+            let containerStarted = await container.start();
+            var ports = [], urls = [], containerPort = "";
+            await container.inspect((err, data) => {
+                if (err) throw new Error(err);
+                var portBindings = data.NetworkSettings.Ports;
+                //console.log("pbings: \n",portBindings);
+                for (let pb in portBindings){
+                    containerPort = pb;
+                    ports.push(portBindings[pb][0].HostPort);
+                }
+                console.log("ports: \n", ports);
+                for (let p in ports){
+                    urls.push(`http://${IP}:${ports[p]} (${containerPort})`);
+                }
+                console.log("urls: \n", urls);
+                io.emit("message",{iomessage:"Container Running Successfully!!",progress:100})
+                return resolve(urls);
+            })
+        } catch(err) {
+            console.log(err);
+            return reject(new Error(`createContainer err: ${err}`));
+        }
+    })
+}
+module.exports = router

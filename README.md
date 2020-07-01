@@ -1,0 +1,60 @@
+# MajorProject v2.0
+
+## Prerequisites:
+1. ipfs version v0.6.0 (currently latest)
+2. NodeJS (latest) (specific version to be installed via nvm tool)
+3. NVM tool
+    - Install Node v8.9.4 & v12.16.2 ~ must be exactly this version.
+4. Java v11.0.7 (Jenkins support v8 and v11 ~ We used v11 for testing our project)
+5. Jenkins v2.222.3 (To be on the safe side, we are specifying our exact jenkins version as well) (<ins>Install all suggested plugins</ins>)
+6. Docker CE (Community Edition) v19.03.9
+7. Docker-compose v1.24
+
+## Setup Jenkins with some plugins:
+Jenkins works on plugins and we need to ensure that our CI server (Jenkins) builds our <ins>sample NodeJS application</ins> which has a git repository and relies on docker for deployment.
+
+#### Install the following plugins (names below are exactly the name of plugins):
+1. NodeJS
+2. Docker (along with 'Docker Commons' & 'Docker Pipeline' to be installed, if not present)
+3. Git (should be pre-installed because we installed suggested plugins)
+
+##### Configure the 'NodeJS' plugin:
+1. Click on "Add NodeJS installation" (_can't remember the exact button name but it something similar_ );
+2. Tick "Install automatically" if it is unticked.
+3. Give a name to NodeJS installation e.g. node14
+4. Select a NodeJS version e.g. 14.2.0 (we used this)
+5. Tick "Force 32-bit architecture
+6. Set "Global npm packages refresh hours" to 72, if it is not already set.
+7. Click on "Apply" 
+8. Click on "Save". 
+  
+##### Configure the 'NodeJS' plugin:
+1. Click on "Add NodeJS installation" (_can't remember the exact button name but it something similar_ );
+2. Tick "Install automatically" if it is unticked.
+3. Give a name to NodeJS installation e.g. node14
+4. Select a NodeJS version e.g. 14.2.0 (we used this)
+5. Tick "Force 32-bit architecture
+6. Set "Global npm packages refresh hours" to 72, if it is not already set.
+7. Click on "Apply" 
+8. Click on "Save". 
+
+##### Configure the 'Docker' plugin:
+1. Click on "Add Docker installation" (_can't remember the exact button name but it something similar_ );
+2. Tick "Install automatically" if it is unticked.
+3. Give a name to Docker installation e.g. docker
+4. Select a Docker version e.g. latest 
+5. Click on "Apply" 
+6. Click on "Save". 
+
+##### Configure the 'Git' plugin:
+1. Open a terminal on your computer and type "which git" (it should give an output starting with /usr/bin/)
+2. Copy that path and paste it in "Path to Git executable" box	
+3. Click on "Apply" 
+4. Click on "Save". 
+
+
+## Start the project:
+**Please make sure all prerequisites are installed properly and the Jenkins plugin configurations are done correctly**
+
+1. `git clone `
+`./startProject.sh --help`

@@ -1,0 +1,37 @@
+/**
+ * UTILITY
+ * For adding repository to and returning majorHash from IPFS.
+ */
+
+const globSource = require('ipfs').globSource;
+const fs = require('fs');
+
+// ipfs related import and setup
+const ipfs = require('./ipfsObj');
+
+module.exports = function addToIPFS(barerepopath){
+    return new Promise( (resolve, reject) => {
+        var majorHash = '';
+         try{
+            // IPFS.add() bare repo :
+            ipfs.add(globSource(barerepopath,{  // To allow hidden files - use globSource
+                recursive: true,
+                hidden: true
+            }),(err, results)=>{
+                if (err) { console.log(err); reject(new Error(`(addToIPFS) ipfs.add Err ${err.name} :- ${err.message}`)); }
+                
+                hash = results[results.length - 1].hash; // Access hash of only the Leader's directory (which is the last element of results)
+                majorHash = hash;
+                ipfs.pin.add(hash, (err, res) => { 
+                    if(err) { console.log(err); reject(new Error(`(addToIPFS) ipfs.pin Err ${err.name} :- ${err.message}`)); }
+                    console.log("Which hash did I just pin?: ", res[0].hash); // Hash after pinning the Leader's directory.
+                });
+                console.log("Save this majorHash: ",majorHash);  
+                resolve(majorHash);
+            })
+        }catch(err){
+            console.log(err);
+            reject(new Error(`addToIPFS err ${err.name} :- ${err.message}`));
+        }
+    })
+}

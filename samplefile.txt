@@ -1,0 +1,7 @@
+export GOPATH=/usr/bin/go
+export JENKINS_HOME=/var/lib/jenkins_home1234567
+export PATH=/usr/bin/java:$PATH
+
+export devopschain_jwtPrivateKey=--jwt
+export JENKINS_HOME=/var/lib/jenkins_home1234567
+export PATH=/usr/bin/java:$PATH

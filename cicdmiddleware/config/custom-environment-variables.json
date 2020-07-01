@@ -1,0 +1,6 @@
+{
+    "jwtPrivateKey":"devopschain_jwtPrivateKey",
+    "jenkins_hostport":"JENKINS_URL",
+    "jenkins_api_token":"JENKINS_API_TOKEN",
+    "jenkins_username":"JENKINS_USER_ID"
+}
