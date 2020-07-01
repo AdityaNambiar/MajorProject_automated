@@ -9,7 +9,8 @@
 5. Jenkins v2.222.3 (To be on the safe side, we are specifying our exact jenkins version as well) (<ins>Install all suggested plugins</ins>)
 6. Docker CE (Community Edition) v19.03.9
 7. Docker-compose v1.24
-
+8. Have [Hyperledger Composer](https://hyperledger.github.io/composer/latest/installing/installing-index.html) & Hyperledger Fabric (should come with Hyperledger Composer's installation) installed.
+- Some of the above tools should be installed after you run `prereqs-ubuntu-updated.sh` successfully under HyperledgerModel directory.
 ## Setup Jenkins with some plugins:
 Jenkins works on plugins and we need to ensure that our CI server (Jenkins) builds our <ins>sample NodeJS application</ins> which has a git repository and relies on docker for deployment.
 
