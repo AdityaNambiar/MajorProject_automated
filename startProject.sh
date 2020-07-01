@@ -24,7 +24,7 @@ trap endScript SIGINT SIGTERM SIGQUIT SIGTSTP
 help() {
     echo "MajorProject startup script v0.1";
     echo "You need to provide the following options after the script name:";
-    echo -e "\t--jwt\t\t- (required) JWT Private Key (same as the one given for BlockchainServer & docker-compose under MajorProject directory)";
+    echo -e "\t--jwt\t\t- (required) JWT Private Key (same as the one given for BlockchainServer & docker-compose under MajorProject/this directory)";
     echo -e "\t--jkurl\t\t- (required) Jenkins URL with Port (default: 127.0.0.1:8080)";
     echo -e "\t--jkuser\t- (required) Jenkins User ID (default: admin)";
     echo -e "\t--jktoken\t- (required) Jenkins API token";
@@ -36,60 +36,6 @@ NO_JWT=true
 NO_JENKINS_USER_ID=true
 NO_JENKINS_URL=true
 NO_JENKINS_API_TOKEN=true
-
-
-# Print installation details for user
-# Check whether all mentioned prerequisites are installed or not.
-echo '';
-echo 'Please review all tools with expected versions are installed as mentioned before:'
-echo ''
-echo -n -e 'Node: '
-node --version
-echo '';
-echo -n -e 'npm: '
-npm --version
-echo '';
-echo -n -e 'Checking for node v8.9.4 & v12.16.2 (via nvm)...: \n'
-nvm ls | grep -q 8.9.4
-ret1=$?
-nvm ls | grep -q 12.16.2
-ret2=$?
-if [ $ret1 -ne 0 ] || [ $ret2 -ne 0 ]; then
-    if [ $ret1 -ne 0 ]; then
-        echo -e "\nnode v8.9.4 is not installed. Type 'nvm install 8.9.4' to install this node version via nvm\n"; 
-    fi
-    if [ $ret2 -ne 0 ]; then
-        echo -e "\nnode v12.16.2 is not installed. Type 'nvm install 12.16.2' to install this node version via nvm\n"; 
-    fi
-
-fi
-echo -n -e 'Docker (version expected - 19.03.9): '
-docker --version
-echo '';
-echo -n -e 'Docker Compose (version expected - 1.24): '
-docker-compose --version
-echo '';
-echo -n -e 'Python: '
-python -V
-echo '';
-echo -n -e 'IPFS (version expected - 0.6.0): '
-ipfs --version
-echo '';
-echo -n -e 'Java (version expected - 11.0.7):\n'
-java --version
-echo '';
-echo -n -e 'Going to print Jenkins service status (expected state in green: "\e[1;92mactive\e[0m" )...: \n'
-sudo service jenkins status
-echo -e "\n\e[1;33mNOTE\e[0m: PLEASE MAKE SURE YOUR JENKINS HAS THE FOLLOWING PLUGINS INSTALLED: \n";
-echo -e "\n1. NodeJS";
-echo "2. Docker";
-echo "3. Git";
-echo "Configure their properties (paths / values) in \"Manage Jenkins > Global Tool Configuration\" as given in README ";
-echo '';
-
-echo -e '=======================================================================================================\n';
-read -p "Press any key to continue..." -n1 var1
-echo
 
 # Took help from hlfv12/startFabric.sh
 paramCheck() {
@@ -173,6 +119,60 @@ Parse_Arguments "$@" # $@ = params will be accessible in the form of array.
 if [ "$HELPINFO" == true ] || [ $# -eq 0 ]; then
     help
 fi
+
+
+# Print installation details for user
+# Check whether all mentioned prerequisites are installed or not.
+echo '';
+echo 'Please review all tools with expected versions are installed as mentioned before:'
+echo ''
+echo -n -e 'Node: '
+node --version
+echo '';
+echo -n -e 'npm: '
+npm --version
+echo '';
+echo -n -e 'Checking for node v8.9.4 & v12.16.2 (via nvm)...: \n'
+nvm ls | grep -q 8.9.4
+ret1=$?
+nvm ls | grep -q 12.16.2
+ret2=$?
+if [ $ret1 -ne 0 ] || [ $ret2 -ne 0 ]; then
+    if [ $ret1 -ne 0 ]; then
+        echo -e "\nnode v8.9.4 is not installed. Type 'nvm install 8.9.4' to install this node version via nvm\n"; 
+    fi
+    if [ $ret2 -ne 0 ]; then
+        echo -e "\nnode v12.16.2 is not installed. Type 'nvm install 12.16.2' to install this node version via nvm\n"; 
+    fi
+
+fi
+echo -n -e 'Docker (version expected - 19.03.9): '
+docker --version
+echo '';
+echo -n -e 'Docker Compose (version expected - 1.24): '
+docker-compose --version
+echo '';
+echo -n -e 'Python: '
+python -V
+echo '';
+echo -n -e 'IPFS (version expected - 0.6.0): '
+ipfs --version
+echo '';
+echo -n -e 'Java (version expected - 11.0.7):\n'
+java --version
+echo '';
+echo -n -e 'Going to print Jenkins service status (expected state in green: "\e[1;92mactive\e[0m" )...: \n'
+sudo service jenkins status
+echo -e "\n\e[1;33mNOTE\e[0m: PLEASE MAKE SURE YOUR JENKINS HAS THE FOLLOWING PLUGINS INSTALLED: \n";
+echo -e "\n1. NodeJS";
+echo "2. Docker";
+echo "3. Git";
+echo "Configure their properties (paths / values) in \"Manage Jenkins > Global Tool Configuration\" as given in README ";
+echo '';
+
+echo -e '=======================================================================================================\n';
+read -p "Press any key to continue..." -n1 var1
+echo
 
 # --- 
 

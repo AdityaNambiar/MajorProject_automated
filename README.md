@@ -56,5 +56,13 @@ Jenkins works on plugins and we need to ensure that our CI server (Jenkins) buil
 ## Start the project:
 **Please make sure all prerequisites are installed properly and the Jenkins plugin configurations are done correctly**
 
-1. `git clone `
-`./startProject.sh --help`
+1. `git clone https://github.com/AdityaNambiar/MajorProject_automated.git`
+2. `./startProject.sh --help` - _To view the usage information before moving ahead_
+  
+Example:  
+`./startProject.sh --jwt 12345 --jktoken 118122c572f717ee7547b44 --jkurl 192.168.1.102 --jkuser john` 
+
+## Authors:
+- [gopimehta](https://github.com/gopimehta) [ Frontend ]  
+- [rajmandal800](https://github.com/rajmandal800/) [ Blockchain middleware, project integration ]  
+- [AdityaNambiar](https://github.com/AdityaNambiar/) [ GitSCM & IPFS backend, also responsible for conversion of project to automation ]
