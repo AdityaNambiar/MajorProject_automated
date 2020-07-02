@@ -22,7 +22,7 @@ endScript(){
 trap endScript SIGINT SIGTERM SIGQUIT SIGTSTP
 
 help() {
-    echo "MajorProject startup script v0.1";
+    echo -e "\nMajorProject startup script v0.1";
     echo "You need to provide the following options after the script name:";
     echo -e "\t--jwt\t\t- (required) JWT Private Key (same as the one given for BlockchainServer & docker-compose under MajorProject/this directory)";
     echo -e "\t--jkurl\t\t- (required) Jenkins URL with Port (default: 127.0.0.1:8080)";
@@ -37,7 +37,6 @@ NO_JENKINS_USER_ID=true
 NO_JENKINS_URL=true
 NO_JENKINS_API_TOKEN=true
 
-echo apitoken: $JENKINS_API_TOKEN
 # Took help from hlfv12/startFabric.sh
 paramCheck() {
     local options_given=0;
@@ -200,10 +199,8 @@ checkPrereqs() {
     echo
 }
 
-#checkPrereqs 
+checkPrereqs 
 # --- 
-
-echo apitoken: $JENKINS_API_TOKEN
 
 if [ "$NO_JWT" == true ]; then
     echo -e "\nPlease provide a \e[4mJWT Private Key\e[0m for authentication.\n";
@@ -219,7 +216,7 @@ if [ "$NO_JENKINS_USER_ID" == true ]; then
 fi
 
 if [ "$NO_JENKINS_API_TOKEN" == true ]; then
-    echo -e "Please provide a \e[4mJenkins API token\e[0m. \nIf you don't have it already, find it here: \n";
+    echo -e "\nPlease provide a \e[4mJenkins API token\e[0m. \nIf you don't have it already, find it here: \n";
     echo -e "\n1. Open your Jenkins Dashboard.";
     echo "2. Click (on left) People.";
     echo "3. Click on your user ID / Name";
@@ -229,10 +226,10 @@ if [ "$NO_JENKINS_API_TOKEN" == true ]; then
     exit;
 fi
 
-# gnome-terminal -t 'Hyperledger Model' --working-directory="${PWD}/HyperledgerModel/" -- ./starthlfcomposer.sh;
-# gnome-terminal -t 'Blockchain Server' --working-directory="${PWD}/BlockchainServer/" -- /bin/bash -c "./startServer.sh $devopschain_jwtPrivateKey; exec bash;"
-# gnome-terminal -t 'CI/CD Middleware' --working-directory="${PWD}/cicdmiddleware/" -- /bin/bash -c "./startCICD.sh $devopschain_jwtPrivateKey $JENKINS_URL $JENKINS_USER_ID $JENKINS_API_TOKEN; exec bash;"
-# sleep 15 # Waiting some time for starthlfcomposer.sh to start/create 'composer_default' net  
-# gnome-terminal --window -t 'Docker containers' -- ./startServices.sh
+gnome-terminal -t 'Hyperledger Model' --working-directory="${PWD}/HyperledgerModel/" -- ./starthlfcomposer.sh;
+gnome-terminal -t 'Blockchain Server' --working-directory="${PWD}/BlockchainServer/" -- /bin/bash -c "./startServer.sh $devopschain_jwtPrivateKey; exec bash;"
+gnome-terminal -t 'CI/CD Middleware' --working-directory="${PWD}/cicdmiddleware/" -- /bin/bash -c "./startCICD.sh $devopschain_jwtPrivateKey $JENKINS_URL $JENKINS_USER_ID $JENKINS_API_TOKEN; exec bash;"
+sleep 15 # Waiting some time for starthlfcomposer.sh to start/create 'composer_default' net  
+gnome-terminal --window -t 'Docker containers' -- ./startServices.sh
 
 sh -c 'echo "Press CTRL+C to exit" | cat - /dev/tty' #https://unix.stackexchange.com/a/205615
