@@ -21,7 +21,7 @@
     "http": "0.0.1-security",
     "hypernal": "^0.3.0",
     "ipfs": "^0.41.2",
-    "ipfs-http-client": "^38.2.1",
+    "ipfs-http-client": "44.3.0",
     "isomorphic-git": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "node-git-server": "^0.6.1",
