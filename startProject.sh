@@ -65,6 +65,7 @@ Parse_Arguments() {
         case $1 in
 			--help)
 				HELPINFO=true
+                break;
 				;;
             --jwt)
                 shift # Grab the value coming after '--jwt' 
