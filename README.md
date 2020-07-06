@@ -1,18 +1,25 @@
 # MajorProject v2.0
 
 ## Prerequisites:
-1. ipfs version v0.6.0 (currently latest)
-2. NodeJS (latest) (specific version to be installed via nvm tool)
-3. NVM tool
-    - Install Node v8.9.4 & v12.16.2 ~ must be exactly this version.
-4. Java v11.0.7 (Jenkins support v8 and v11 ~ We used v11 for testing our project)
-5. Jenkins v2.222.3 (To be on the safe side, we are specifying our exact jenkins version as well) (<ins>Install all suggested plugins</ins>)
-6. Docker CE (Community Edition) v19.03.9
-7. Docker-compose v1.24
-8. Have [Hyperledger Composer](https://hyperledger.github.io/composer/latest/installing/installing-index.html) & Hyperledger Fabric (should come with Hyperledger Composer's installation) installed.
-- Some of the above tools should be installed after you run `prereqs-ubuntu-updated.sh` successfully under HyperledgerModel directory.
-**Do <ins>not run the prereqs script</ins> given on the <ins>Hyperledger Composer website</ins> as it is outdated and won't let Fabric start properly.**
+
+- For Blockchain middleware Server (`BlockchainServer/`):
+1. NodeJS (latest) (specific version to be installed via nvm tool)
+2. NVM tool
+    - Install Node v8.9.4 & v12.16.2 ~ must be exactly this version.  
+
+- For Jenkins:
+1. Java v11.0.7 (Jenkins support v8 and v11 ~ We used v11 for testing our project)
+2. Jenkins v2.222.3 (To be on the safe side, we are specifying our exact jenkins version as well) (<ins>Install all suggested plugins</ins>)  
+
+- For Hyperledger Fabric (`HyperledgerModel/`):
+1. Have [Hyperledger Composer](https://hyperledger.github.io/composer/latest/installing/installing-index.html) & Hyperledger Fabric (should come with Hyperledger Composer's installation) installed.
+2. Run `./prereqs-ubuntu-updated.sh`.
+    - Some of the above tools should be installed after you run `prereqs-ubuntu-updated.sh` successfully under HyperledgerModel directory.
+
+**Do <ins>not run the prereqs script</ins> given on the <ins>Hyperledger Composer website</ins> as it is outdated and won't allow Fabric to start properly.**
+
 ## Setup Jenkins with some plugins:
+
 Jenkins works on plugins and we need to ensure that our CI server (Jenkins) builds our <ins>sample NodeJS application</ins> which has a git repository and relies on docker for deployment.
 
 #### Install the following plugins (names below are exactly the name of plugins):

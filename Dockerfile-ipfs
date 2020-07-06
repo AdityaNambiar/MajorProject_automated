@@ -21,7 +21,7 @@ RUN mkdir /home/ipfsuser06/ipfsHome
 WORKDIR /home/ipfsuser06/ipfsHome
 
 # Bring in and extract directly (that's what 'ADD' can do) 
-ADD go-ipfs_v0.6.0_linux-amd64.tar.gz .
+ADD go-ipfs_v0.4.22_linux-amd64.tar.gz .
 # Going to install IPFS command now..
 # I needed root and I did not want to perform previous steps again so I am going to switch between users using "USER" instruction
 USER root

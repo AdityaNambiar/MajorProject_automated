@@ -35,7 +35,7 @@ RUN export NVM_DIR="$HOME/.nvm" && \
     nvm install 12.16.2 && npm install
 
 # Bring in and extract directly (that's what 'ADD' can do) 
-ADD go-ipfs_v0.6.0_linux-amd64.tar.gz .
+ADD go-ipfs_v0.4.22_linux-amd64.tar.gz .
 # Going to install IPFS command now..
 # I needed root and I did not want to perform previous steps again so I am going to switch between users using "USER" instruction
 USER root
@@ -58,7 +58,7 @@ RUN ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001     \
     && ipfs config --json API.HTTPHeaders.Access-Control-Allow-Headers '[ "X-Requested-With","Range","User-Agent"]'     \
     && ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Headers '[ "X-Requested-With","Range","User-Agent"]'
 
-# # expose IPFS server port
+# expose IPFS server port
 EXPOSE 7005 5000
 # add `/ipfsServer/node_modules/.bin` to $PATH
 ENV PATH /home/ipfsuser06/ipfsServer/node_modules/.bin:$PATH

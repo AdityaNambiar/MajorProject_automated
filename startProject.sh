@@ -180,9 +180,6 @@ checkPrereqs() {
     echo -n -e 'Python: '
     python -V
     echo '';
-    echo -n -e 'IPFS (version expected - 0.6.0): '
-    ipfs --version
-    echo '';
     echo -n -e 'Java (version expected - 11.0.7):\n'
     java --version
     echo '';
