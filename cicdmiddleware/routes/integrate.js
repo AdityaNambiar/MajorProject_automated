@@ -114,6 +114,7 @@ function doesJobExist(jobName){
 
 
 function createJob(jobName, xmlConfigString) {
+    console.log(jobName, xmlConfigString)
     const io = require("../utilities/svsocket").getIo();
     io.emit("message",{iomessage:"Creating Job",progress:8})
     return new Promise( (resolve, reject) => {
@@ -140,6 +141,7 @@ function createJob(jobName, xmlConfigString) {
     })
 }
 function updateJob(jobName, xmlConfigString) {
+    console.log(jobName, xmlConfigString)
     const io = require("../utilities/svsocket").getIo();
     console.log("updateJob executed");
     io.emit("message",{iomessage:"Updating Job",progress:8})
