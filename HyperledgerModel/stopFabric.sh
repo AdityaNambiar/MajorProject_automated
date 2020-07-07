@@ -34,7 +34,6 @@ done
 if [ $? -ne 0 ]
 then 
 	echo "Could not remove containers. Please try this yourself and read the error: docker rm $(docker ps -aq) -f"
-else
 	exit;
 fi
 	
@@ -44,7 +43,6 @@ docker rmi -f $(docker images -q -f "reference=dev-*")
 if [ $? -ne 0 ]
 then 
 	echo "Could not remove chaincode image (dev-peer...). Please try this yourself and read the error: docker rmi $(grep 'dev') -f "
-else
 	exit;
-fi  
+fi 
 
