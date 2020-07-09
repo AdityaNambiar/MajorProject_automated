@@ -18,6 +18,20 @@
 
 **Do <ins>not run the prereqs script</ins> given on the <ins>Hyperledger Composer website</ins> as it is outdated and won't allow Fabric to start properly.**
 
+## Important Note (changes in startServices):
+- If your IP is also starting from `192.168. ..` **with netmask as `255.255.0.0`** and **broadcast as `192.168.255.255`**, you can ignore this section.
+- Check your IP Address (IPv4) using `ifconfig` command and change the subnet.
+    - A subnet syntax is formed in this manner:  
+        `<IP>/NET_ID_Bits`  
+    Example,   
+    - `broadcast 192.168.255.255` is _my_ WiFi (interface - wlp1s0) broadcast IP from ifconfig.
+    - So I replaced '255' with '0' in the above IP so that it becomes: `192.168.0.0`. Here, I got my IP. Now to figure out the Net ID Bits.
+    - `netmask 255.255.0.0` is _my_ netmask. Net ID Bits can be understood based on the following manner:
+        - For `255.0.0.0`, use `/8`
+        - For `255.255.0.0`, use `/16` (multiplied by 8 everytime)
+        - For `255.255.255.0`, use `/24`
+    - So finally, the subnet I have to use is: `192.168.0.0/8`. 
+- Your Gateway IP will be your subnet IP but with `.1` at the end. Like my subnet is `192.168.0.0`, so my gateway IP will be `192.168.0.1`.
 ## Setup Jenkins with some plugins:
 
 Jenkins works on plugins and we need to ensure that our CI server (Jenkins) builds our <ins>sample NodeJS application</ins> which has a git repository and relies on docker for deployment.
