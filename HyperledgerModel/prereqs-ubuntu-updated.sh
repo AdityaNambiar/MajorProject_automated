@@ -112,7 +112,7 @@ set +e
 COUNT="$(python -V 2>&1 | grep -c 2.)"
 if [ ${COUNT} -ne 1 ]
 then
-   sudo apt-get install -y python-minimal
+   sudo apt-get install -y python2-minimal
 fi
 
 # Install unzip, required to install hyperledger fabric.
